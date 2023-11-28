@@ -1,0 +1,289 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<title>Profile - {{user_profile.user.username}}</title>
+	<!-- <link rel="icon" href="images/fav.png" type="image/png" sizes="16x16"> -->
+
+	<link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/color.css' %}">
+	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+	<!-- jquery cdn  -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+
+
+</head>
+
+<body>
+	<!--<div class="se-pre-con"></div>-->
+	<div class="theme-layout">
+
+	</div>
+
+	<section>
+		<div class="feature-photo">
+			<figure style="height: 300px; overflow: hidden;"><img src="{% static 'images/bg2.jpg' %}" alt=""></figure>
+			<form action="/follow" method="POST">
+				{% csrf_token %}
+				<div class="add-btn">
+					<span style="color: white; font-size: 27px; text-align:right; " "><b><u><a href="
+						/">Home</a></u></b></span>
+
+					
+
+					{% if user_followers == 0 or user_followers == 1 %}
+					<span style="color: white; font-size: 27px;"><b>{{user_followers}} Followers</b></span>
+					{% else %}
+					<span style="color: white; font-size: 27px;"><b>{{user_followers}} Followers</b></span>
+					{% endif %}
+
+
+					<span style="color: white; font-size: 27px;"><b>{{user_following}} Following</b></span>
+
+					<input type="hidden" value="{{user.username}}" name="follower" />
+					<input type="hidden" value="{{user_object.username}}" name="user" />
+
+					{% if user_object.username == user.username %}
+					<a href="/settings" data-ripple="">Account Settings</a>
+					{% else %}
+					<a data-ripple=""><button type="submit"
+							style="background-color: #ffc0cb; border: #ffc0cb;">{{button_text}}</button></a>
+					{% endif %}
+
+				</div>
+			</form>
+
+			<!-- <form class="edit-phto">
+					<i class="fa fa-camera-retro"></i>
+					<label class="fileContainer">
+						Upload Cover Photo
+					<input type="file"/>
+					</label>
+				</form> -->
+			<div class="container-fluid">
+				<div class="row merged">
+					<div class="col-lg-2 col-sm-3">
+						<div class="user-avatar">
+							<figure>
+								<img src="{{user_profile.profileimg.url}}" style="height: 250px; width: 100%;" alt="">
+								<!-- <form class="edit-phto">
+										<i class="fa fa-camera-retro"></i>
+										<label class="fileContainer">
+											<a href="#account-settings">Upload Profile Photo</a>
+										</label>
+									</form> -->
+							</figure>
+						</div>
+					</div>
+					<div class="col-lg-10 col-sm-9">
+						<div class="timeline-info">
+							<ul>
+								<li class="admin-name">
+									<h5 style="color: black;white-space: nowrap; width: 110px; font-size: 27px;">
+										<b>@{{user_profile.user.username}}</b><!--<i class="fa fa-check-circle" style="color: #48dbfb;" aria-hidden="true"></i>-->
+									</h5>
+                                    <h5 style="color: black;white-space: nowrap; width: 110px; font-size: 27px;">
+                                        <b>{{rating}}</b>
+                                        </h5>   
+									<!--<span>Group Admin</span>-->
+								</li>
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section><!-- top area -->
+	{% if user_profile.user != request.user %}
+	<section>
+		<div class="bio text-center " style="display:flex; align-items: center; ">
+			<button id="contactbtn" class="bg-blue-400 px-3 py-2 border mt-3">Contact Me</button>
+			<p class="p_phone font-bold  text-white mt-4 ml-2"
+				style="display: none; font-weight: bold; font-size: 20px;">
+
+				{{user_profile.phone}}
+			</p>
+		</div>
+	</section>
+	{% endif %}
+	<section id="back">
+		<div class="gap bg-white" id="my_back">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="row " id="page-contents">
+							<!-- sidebar -->
+
+							{% for obj in event_list %}
+							<div class="col-lg-3 "></div>
+							<div class="col-lg-6 mx-auto">
+
+								<div class="space-y-5 my-2 flex-shrink-0 flex">
+									<div
+										class=" w-full m-auto text-center  mt-3 bg-green-400 text-white p-5  shadow-lg ">
+										<div class="">
+
+											<h1 class=" font-bold md:text-4xl sm:text-2xl font-serif mt-3">
+												{{obj.event_name}}</h1>
+											<img class="inline-block h-10 w-10" src="{% static 'images/loc.png' %}"
+												alt="">
+											<p class="inline-block md:text-3xl sm:text-xl">{{obj.location}}</p>
+										</div>
+										<p class="inline-flex items-center md:text-xl sm:text-xl">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date" viewBox="0 0 16 16">
+												<path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
+												<path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+											  </svg>
+											  &nbsp;
+												
+											  <span>On {{obj.date}}, {{obj.time}}</span></p>
+										<div class="md:flex  justify-around mx-5 my-3 ">
+											<div class="">
+												{% if obj.sport == 'SOCCER' %}
+												<img class="w-10 h-10 mx-auto sm:mx-auto sm:mt-2 "
+													src="{% static 'images/soccer.png' %}" alt="">
+												{% elif obj.sport == 'BASKETBALL' %}
+												<img class="w-10 h-10 mx-auto sm:mx-auto sm:mt-2 "
+													src="{% static 'images/basketball.png' %}" alt="">
+												{% elif obj.sport == 'TENNIS' %}
+												<img class="w-10 h-10 mx-auto sm:mx-auto sm:mt-2 "
+													src="{% static 'images/tennis.png' %}" alt="">
+												{% elif obj.sport == 'CYCLING' %}
+												<img class="w-10 h-10 mx-auto sm:mx-auto sm:mt-2 "
+													src="{% static 'images/cycling.png' %}" alt="">
+												{% endif %}
+												<h3
+													class="md:text-3xl md:align-middle md:ml-2 font-semibold font-mono sm:text-lg text-gray-700">
+													{{obj.sport}}
+												</h3>
+											</div>
+											<div class=" ">
+												<img class="w-10 h-10 mx-auto sm:mx-auto sm:mt-2"
+													src="{% static 'images/level.png' %}" alt="">
+
+												<h3
+													class="md:text-3xl md:align-middle md:ml-2 font-semibold font-mono sm:text-lg text-gray-700">
+													Level {{obj.lavel}}
+												</h3>
+											</div>
+											<div class="">
+												<img class="w-10 h-10 mx-auto sm:mt-2"
+													src="{% static 'images/man.png' %}" alt="">
+												<h3
+													class="md:text-3xl md:align-middle md:ml-2 font-semibold font-mono sm:text-lg text-gray-700">
+													{{obj.participant_left}}/{{obj.no_of_participents}}
+												</h3>
+											</div>
+
+
+										</div>
+										<div class="flex justify-around">
+											{% if obj.is_active %}
+											{% if obj.participant_left == obj.no_of_participents %}
+											<button class="bg-yellow-600 px-3 mt-3 rounded py-2 text-lg border-lg"
+												disabled>No Seat Left</button>
+											{% else %}
+												{% if requesting_profile == user_profile %}
+
+													{% if user_profile in obj.participants.all %}
+													<button
+														class="px-3 py-2 bg-blue-600 mt-3 text-[20px] font-semibold rounded hover:bg-blue-900  ">Joined
+														</button>
+													{% else %}
+													<a href="{% url 'join-event' obj.id %}"><button
+															class="px-3 py-2 bg-blue-600 mt-3 text-[20px] font-semibold rounded hover:bg-blue-900  ">Join
+															Now</button></a>
+													{% endif %}
+												{% else %}
+												{% if requesting_profile in obj.participants.all %}
+												<button
+													class="px-3 py-2 bg-blue-600 mt-3 text-[20px] font-semibold rounded hover:bg-blue-900  ">Joined
+													</button>
+												{% else %}
+												<a href="{% url 'join-event' obj.id %}"><button
+														class="px-3 py-2 bg-blue-600 mt-3 text-[20px] font-semibold rounded hover:bg-blue-900  ">Join
+														Now</button></a>
+												{% endif %}
+												{% endif %}
+
+
+											{% endif %}
+											{% else %}
+											<button
+												class="px-3 py-2 bg-blue-600 mt-3 text-[20px] font-semibold rounded hover:bg-blue-900  disabled">Completed</button>
+											{% endif %}
+											<a href="{% url 'view-event' obj.id %}"><button
+													class="px-3 py-2 bg-blue-600 mt-3 text-[20px] font-semibold rounded hover:bg-blue-900  ">View
+													Details</button></a>
+										</div>
+										<!-- <a href="" class="px-20 bg-blue-100 py-3 mt-5">Join Now</a> -->
+									</div>
+								</div>
+
+
+
+
+
+
+								<!--<div class="lodmore"><button class="btn-view btn-load-more"></button></div>-->
+								<!-- photos -->
+							</div><!-- centerl meta -->
+							<div class="col-lg-3"></div>
+							{% endfor %}
+							<!-- <div class="col-lg-2">
+								<aside class="sidebar static">
+									
+								</aside>
+							</div> -->
+							<!-- sidebar -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+	<script data-cfasync="false"
+		src="{% static '../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
+	<script src="{% static 'js/main.min.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+	<script>
+		$("#contactbtn").click(function () {
+			$(".p_phone").toggle();
+		});
+
+		$(document).ready(function () {
+			$('#contactbtn').click(function () {
+				$.ajax({
+					url: '/my_view/{{request.user.pk}}/{{user_profile.user.pk}}',
+					type: 'GET',
+					dataType: 'json',
+					success: function (data) {
+						// $('#my-div').text('Hello, ' + data.name + '!');
+					}
+				});
+			});
+		});
+	</script>
+
+</body>
+
+
+</html>

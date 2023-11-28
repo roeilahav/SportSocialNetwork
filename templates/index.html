@@ -1,0 +1,521 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'favicon.png' %}" rel="icon" type="image/png">
+    <title>Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        body {
+            /* background-image: url("{% static 'images/bg2.jpg' %}") !important; */
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+
+        }
+
+        #ppp {
+            overflow: scroll;
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        #ppp::-webkit-scrollbar {
+            display: none;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+        }
+
+        .notification {
+            position: relative;
+        }
+
+        .notification::after {
+            content: "{{my_profile.number_of_new}}";
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 16px;
+        }
+    </style>
+</head>
+
+<body
+    style="background-image:url('https://png.pngtree.com/background/20220716/original/pngtree-colorful-sports-theme-background-material-picture-image_1636814.jpg') ; background-repeat:no-repeat; background-size: cover;">
+
+    <header>
+        <div class="header_inner">
+            <form action="/search" method="POST">
+                {% csrf_token %}
+                <div class="left-side">
+                    <!-- Logo -->
+                    <div id="logo" class=" uk-hidden@s">
+                        <a href="home.html">
+                            <b>
+                                <h1 style="text-transform: uppercase;">Social Book</h1>
+                            </b>
+                        </a>
+                    </div>
+
+                    <!--<div class="triger" uk-toggle="target: #wrapper ; cls: sidebar-active">
+                            <i class="uil-bars"></i>
+                        </div>-->
+
+                    <!-- <div class="header_search"> -->
+                    <input type="text" name="username" placeholder="Search for username.." required>&nbsp; &nbsp;
+                    <button type="submit"><i class="fa fa-search fa-1x"></i></button>
+                    <!-- </div> -->
+
+                </div>
+            </form>
+
+            <div class="right-side lg:pr-4">
+                <!-- upload -->
+                <a href="#"
+                    class="bg-red-500 flex font-bold hidden hover:bg-black-600 hover:text-white inline-block items-center lg:block max-h-10 mr-4 px-4 py-2 rounded shadow text-white">
+                    <ion-icon name="add-circle" class="-mb-1
+                             mr-1 opacity-90 text-xl uilus-circle"></ion-icon> Create Event
+                </a>
+                <!-- upload dropdown box -->
+                <div uk-dropdown="pos: bottom-right;mode:click ; animation: uk-animation-slide-bottom-small"
+                    class="header_dropdown">
+
+                    <!-- notivication header -->
+                    <!-- <div class="px-4 py-3 -mx-5 -mt-4 mb-5 border-b">
+                                <h4>Upload Pics</h4>
+                            </div> -->
+
+                    <!-- place here old content  -->
+                    <!-- place here old content  -->
+
+                    <!-- my form -->
+
+                    <form method="post" action="{% url 'event' %}"
+                        class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="location">
+                                Event Name
+                            </label>
+                            <input
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="location" type="text" placeholder="Enter Event Name" name="name" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="event-name">
+                                Event Type
+                            </label>
+                            <select class="form-select block w-full mt-1" id="event-name" name="type" required>
+                                <option value="SOCCER">SOCCER</option>
+                                <option value="BASKETBALL">BASKETBALL</option>
+                                <option value="TENNIS">TENNIS</option>
+                                <option value="CYCLING">CYCLING</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="">
+                                Location
+                            </label>
+                            <select class="form-select block w-full mt-1" id="" name="location" required>
+
+                                <option value="TEL AVIV">TEL AVIV</option>
+
+                                <option value="BEER SHEVA">BEER SHEVA</option>
+                                <option value="JERUSALEM">JERUSALEM</option>
+                                <option value="HAIFA">HAIFA</option>
+                                <option value="DIMONA">DIMONA</option>
+                                <option value="RAMAT GAN">RAMAT GAN</option>
+                                <option value="HERZELIA">HERZELIA</option>
+                                <option value="HEDERA">HEDERA</option>
+                                <option value="KIRIAT SHMONA">KIRIAT SHMONA</option>
+                                <option value="ELIAT">ELIAT</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="level">
+                                Level
+                            </label>
+
+
+                            <select class="form-select block w-full mt-1" id="" name="level" required>
+
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+
+
+
+                            </select>
+
+
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="no-of-players">
+                                Number of Players
+                            </label>
+                            <input
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="no-of-players" type="number" placeholder="Enter number of players"
+                                name="total_player" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="date">
+                                Date
+                            </label>
+                            <input
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="date" type="date" placeholder="Enter date" name="date" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="time">
+                                Time
+                            </label>
+                            <input
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                id="time" type="time" placeholder="Enter time" name="time" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="time">
+                                Choose Image
+                            </label>
+                            <input type="file" name="image" class="block w-full text-sm 
+                            " required>
+
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <button
+                                class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-10"
+                                type="submit">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+
+
+                    <!-- my form -->
+
+
+                    <!-- <div class="px-4 py-3 -mx-5 -mb-4 mt-5 border-t text-sm">
+                        Your Image size Must be Maxmium 999MB
+                    </div> -->
+                </div>
+
+                <!-- Notification -->
+
+
+                <!-- <a href="#" class="header-links-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet"
+                        viewBox="0 0 24 24">
+                        <g fill="none">
+                            <path
+                                d="M12 22a2.02 2.02 0 0 1-2.01-2h4a2.02 2.02 0 0 1-.15.78a2.042 2.042 0 0 1-1.44 1.18h-.047A1.922 1.922 0 0 1 12 22zm8-3H4v-2l2-1v-5.5a8.065 8.065 0 0 1 .924-4.06A4.654 4.654 0 0 1 10 4.18V2h4v2.18c2.579.614 4 2.858 4 6.32V16l2 1v2z"
+                                fill="currentColor" />
+                        </g>
+                        <text x="17" y="7" font-size="10" fill="#fff">5</text>
+                    </svg>
+                </a> -->
+                {% if my_profile.number_of_new > 0 %}
+
+                <button type="button" class="header-links-item notification" id="noti_clear">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet"
+                        viewBox="0 0 24 24">
+                        <g fill="none">
+                            <path
+                                d="M12 22a2.02 2.02 0 0 1-2.01-2h4a2.02 2.02 0 0 1-.15.78a2.042 2.042 0 0 1-1.44 1.18h-.047A1.922 1.922 0 0 1 12 22zm8-3H4v-2l2-1v-5.5a8.065 8.065 0 0 1 .924-4.06A4.654 4.654 0 0 1 10 4.18V2h4v2.18c2.579.614 4 2.858 4 6.32V16l2 1v2z"
+                                fill="currentColor" />
+                        </g>
+                    </svg>
+                </button>
+                {% else %}
+                <a href="#" class="header-links-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet"
+                        viewBox="0 0 24 24">
+                        <g fill="none">
+                            <path
+                                d="M12 22a2.02 2.02 0 0 1-2.01-2h4a2.02 2.02 0 0 1-.15.78a2.042 2.042 0 0 1-1.44 1.18h-.047A1.922 1.922 0 0 1 12 22zm8-3H4v-2l2-1v-5.5a8.065 8.065 0 0 1 .924-4.06A4.654 4.654 0 0 1 10 4.18V2h4v2.18c2.579.614 4 2.858 4 6.32V16l2 1v2z"
+                                fill="currentColor" />
+                        </g>
+                    </svg>
+                </a>
+                {% endif %}
+
+
+
+                <div uk-drop="mode: click;offset: 4" class="header_dropdown">
+                    <h4 class="-mt-5 -mx-5 bg-gradient-to-t from-gray-100 to-gray-50 border-b font-bold px-6 py-3">
+                        Notification </h4>
+                    <ul class="dropdown_scrollbar" data-simplebar>
+                        <li>
+                            {% for noti in notifications %}
+
+                            {% if noti.who_contacted %}
+                            <a href="{% url 'feedback2' noti.pk %}">
+                                <div class="drop_avatar"> <img
+                                        src="https://static.vecteezy.com/system/resources/previews/006/086/198/original/notification-icon-for-web-vector.jpg"
+                                        alt="">
+                                </div>
+                                <div class="drop_content">
+                                    <p> <strong class="text-link"></strong>
+                                        <span class="text-link"> {{noti.noti_text}} </span>
+                                    </p>
+                                    <span class="time-ago"> {{noti.when}} </span>
+                                </div>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'feedback' noti.event_id %}">
+                                <div class="drop_avatar"> <img
+                                        src="https://static.vecteezy.com/system/resources/previews/006/086/198/original/notification-icon-for-web-vector.jpg"
+                                        alt="">
+                                </div>
+                                <div class="drop_content">
+                                    <p> <strong class="text-link"></strong>
+                                        <span class="text-link"> {{noti.noti_text}} </span>
+                                    </p>
+                                    <span class="time-ago"> {{noti.when}} </span>
+                                </div>
+                            </a>
+                            {% endif %}
+
+
+                            {% endfor %}
+                        </li>
+
+
+                    </ul>
+                </div>
+
+
+
+                <a href="#">
+                    <img src="{{my_profile.profileimg.url}}" class="header-avatar" alt="">
+                </a>
+
+                <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
+                    <ul>
+                        <li><a href="{% url 'profile' request.user %}"> Profile </a> </li>
+                        <li><a href="/settings"> Account setting </a> </li>
+                        <li><a href="logout"> Log Out</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <div class="container m-auto">
+
+        <!--<h1 class="lg:text-2xl text-lg font-extrabold leading-none text-gray-900 tracking-tight mb-5"> Feed </h1>--->
+
+        <div class="lg:flex justify-center lg:space-x-10 lg:space-y-0 space-y-5">
+
+            <!-- left sidebar-->
+            <div class="space-y-5 flex-shrink-0 lg:w-7/12" style="height:100vh; overflow: scroll;" id="ppp">
+                {% for obj in event %}
+                <div class=" w-full m-auto text-center  mt-3 bg-green-400 text-white p-5 rounded-lg shadow-lg ">
+                    <div class="">
+
+                        <h1 class=" font-bold md:text-4xl sm:text-2xl font-serif mt-3">{{obj.event_name}}</h1>
+                        <img class="inline-block h-10 w-10" src="{% static 'images/loc.png' %}" alt="">
+                        <p class="inline-block md:text-3xl sm:text-xl">{{obj.location}}</p>
+
+                    </div>
+                    <p class="inline-flex items-center md:text-xl sm:text-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-calendar-date" viewBox="0 0 16 16">
+                            <path
+                                d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z" />
+                            <path
+                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                        </svg>
+                        &nbsp;
+
+                        <span>On {{obj.date}}, {{obj.time}}</span>
+                    </p>
+                    <div class="md:flex  justify-around mx-5 my-3 ">
+                        <div class="">
+                            {% if obj.sport == 'SOCCER' %}
+                            <img class="w-10 h-10 mx-auto sm:mx-auto sm:mt-2 " src="{% static 'images/soccer.png' %}"
+                                alt="">
+                            {% elif obj.sport == 'BASKETBALL' %}
+                            <img class="w-10 h-10 mx-auto sm:mx-auto sm:mt-2 "
+                                src="{% static 'images/basketball.png' %}" alt="">
+                            {% elif obj.sport == 'TENNIS' %}
+                            <img class="w-10 h-10 mx-auto sm:mx-auto sm:mt-2 " src="{% static 'images/tennis.png' %}"
+                                alt="">
+                            {% elif obj.sport == 'CYCLING' %}
+                            <img class="w-10 h-10 mx-auto sm:mx-auto sm:mt-2 " src="{% static 'images/cycling.png' %}"
+                                alt="">
+                            {% endif %}
+                            <h3
+                                class="md:text-3xl md:align-middle md:ml-2 font-semibold font-mono sm:text-lg text-gray-700">
+                                {{obj.sport}}
+                            </h3>
+                        </div>
+                        <div class=" ">
+                            <img class="w-10 h-10 mx-auto sm:mx-auto sm:mt-2" src="{% static 'images/level.png' %}"
+                                alt="">
+
+                            <h3
+                                class="md:text-3xl md:align-middle md:ml-2 font-semibold font-mono sm:text-lg text-gray-700">
+                                Level {{obj.lavel}}
+                            </h3>
+                        </div>
+                        <div class="">
+                            <img class="w-10 h-10 mx-auto sm:mt-2" src="{% static 'images/man.png' %}" alt="">
+                            <h3
+                                class="md:text-3xl md:align-middle md:ml-2 font-semibold font-mono sm:text-lg text-gray-700">
+                                {{obj.participant_left}}/{{obj.no_of_participents}}
+                            </h3>
+                        </div>
+
+
+                    </div>
+                    <div class="flex justify-around">
+                        {% if obj.participant_left == obj.no_of_participents %}
+                        <button class="bg-yellow-600 px-3 mt-3 rounded py-2 text-lg border-lg" disabled>No Seat
+                            Left</button>
+                        {% else %}
+
+
+                        {% if my_profile in obj.participants.all %}
+                        <button
+                            class="px-3 py-2 bg-blue-600 mt-3 text-[20px] font-semibold rounded hover:bg-blue-900  ">Joined
+                        </button>
+                        {% else %}
+                        <a href="{% url 'join-event' obj.id %}"><button
+                                class="px-3 py-2 bg-blue-600 mt-3 text-[20px] font-semibold rounded hover:bg-blue-900  ">Join
+                                Now</button></a>
+                        {% endif %}
+                        {% endif %}
+                        <a href="{% url 'view-event' obj.id %}"><button
+                                class="px-3 py-2 bg-blue-600 mt-3 text-[20px] font-semibold rounded hover:bg-blue-900  ">View
+                                Details</button></a>
+                    </div>
+                    <!-- <a href="" class="px-20 bg-blue-100 py-3 mt-5">Join Now</a> -->
+                </div>
+                {% endfor %}
+                <br><br><br>
+            </div>
+            <!-- right sidebar-->
+            <div class="lg:w-5/12">
+
+                <div class="bg-white  shadow-md rounded-md overflow-hidden">
+
+                    <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
+                        <h2 class="font-semibold text-lg">Matched for you</h2>
+                        <!-- <a href="#"> Refresh</a> -->
+                    </div>
+
+                    <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
+
+                        {% for suggestion in similar_profile %}
+                        <div class="flex items-center justify-between py-3">
+                            <div class="flex flex-1 items-center space-x-4">
+                                <a href="/profile/{{suggestion.user}}">
+                                    <img src="{{suggestion.profileimg.url}}" class="bg-gray-200 rounded-full w-10 h-10">
+                                </a>
+                                <div class="flex flex-col">
+                                    <span class="block capitalize font-semibold"> {{suggestion.user}} </span>
+                                    <span class="block capitalize text-sm"> {{suggestion.bio}} </span>
+                                </div>
+                            </div>
+
+                            <a href="/profile/{{suggestion.user}}"
+                                class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 ">
+                                contact player</a>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    </div>
+
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Scripts
+    ================================================== -->
+    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+
+
+    <script src="{% static '../../unpkg.com/ionicons%405.2.3/dist/ionicons.js' %}"></script>
+    <script>
+
+		$(document).ready(function () {
+			$('#noti_clear').click(function () {
+				$.ajax({
+					url: '/clear_notifications/{{request.user.pk}}',
+					type: 'GET',
+					dataType: 'json',
+					success: function (data) {
+						// $('#my-div').text('Hello, ' + data.name + '!');
+					}
+				});
+			});
+		});
+	</script>
+</body>
+
+
+</html>

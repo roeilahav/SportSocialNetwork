@@ -1,0 +1,94 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+        <style>
+            body{
+                /* background-image: url("{% static 'images/bg2.jpg' %}") !important; */
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                margin-top: 0px !important
+            }
+        </style>
+
+</head>
+
+<body style="background-image:url('https://png.pngtree.com/background/20220716/original/pngtree-colorful-sports-theme-background-material-picture-image_1636814.jpg') ; background-repeat:no-repeat; background-size: cover;">
+
+    <main class="w-75 mx-auto " >
+        
+        <a href="/" class="btn btn-info ms-5 mt-5">Back to Home</a>
+        <br>
+        <div class="card card-body w-50 mx-auto shadow">
+
+            <img src="{{event.image.url}}" alt="">
+
+        </div>
+        <br>
+
+        <div class="card card-body w-50 mx-auto shadow">
+
+            <h2 class="text-center">{{event.event_name}}</h2>
+            <div class="row text-center">
+                <div class="col-md-4"><p>Sport: {{event.sport }}</p></div>
+                <div class="col-md-4"><p>Place: {{event.location }}</p></div>
+                <div class="col-md-4"><p>On: {{event.date }}, {{event.time }}</p></div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <h4>List of Participants</h4>
+                    <ul class="list-group">
+                        {% for participant in participant_list %}
+                        <li class="list-group-item">
+                            <a href="{% url 'profile' participant.user.username %}">{{participant}}</a>
+                             <br>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+{% if event.user == request.user %}
+        <div class="row">
+            <div class="col text-center mt-3">
+                {% if event.is_active %}
+                <a href="{% url 'complete-event' event.id %}" class="btn btn-success">
+                    Complete Event
+                </a>
+                {% else %}
+                <a  class="btn btn-success disabled">
+                    Completed
+                </a>
+                {% endif %}
+            </div>
+        </div>
+{% endif %}
+    </main>
+
+    <br><br>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+        </script>
+</body>
+
+</html>
